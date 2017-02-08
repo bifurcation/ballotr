@@ -1,8 +1,8 @@
-var FETCH_URI = "http://www.ipv.sx/ballotr/fetch.pl";
-var MAIL_URI = "http://www.ipv.sx/ballotr/mail.php";
+var FETCH_URI = "https://www.ipv.sx/ballotr/fetch.pl";
+var MAIL_URI = "https://www.ipv.sx/ballotr/mail.php";
 var AGENDA_URI = "https://datatracker.ietf.org/iesg/agenda/agenda.json";
 var BALLOT_URI = "https://datatracker.ietf.org/doc/DOCNAME/ballot.json";
-var DOC_URI = "http://tools.ietf.org/id/";
+var DOC_URI = "https://tools.ietf.org/id/";
 var AGENDA = {};
 var BALLOT = {
     /*
@@ -48,8 +48,8 @@ function deleteState() {
 
 function generateBallot() {
     // Fetch the JSON agenda and populate it into a local object
-    $.ajax( { 
-        url: FETCH_URI + "?url=" + AGENDA_URI 
+    $.ajax( {
+        url: FETCH_URI + "?url=" + AGENDA_URI
     } ).done( function(data) {
         // Cache a copy of the agenda
         AGENDA = JSON.parse(data);
@@ -109,11 +109,11 @@ function prettyBallot() {
 
 function fetchDocuments() {
     $("#loading").text("Loading Documents...");
-    
+
     var docFetches = [];
 
     function setText(doc) {
-        return function(text) { 
+        return function(text) {
             BALLOT[doc].text = text;
             var loading = $("#loading").html();
             $("#loading").html( loading + "<br/>" + doc );
@@ -184,7 +184,7 @@ function drawPositions() {
         var id = $(this).parent().attr("id").replace("-overlay","");
         drawElement($(this), id);
     });
-   
+
     $("#overlays .discussP").each(function() {
         var doc = $(this).parent().parent().attr("id").replace("-overlay","");
         if (BALLOT[doc].position == 3) {
@@ -246,7 +246,7 @@ function createInterface() {
         overlay.find(".sidebar .commentComment").text(BALLOT[doc].comment);
         overlay.find(".sidebar .discussComment").text(BALLOT[doc].discuss);
     }
-    
+
     // 1.*. Fill in position texts and colors
     drawPositions();
 
@@ -330,13 +330,13 @@ function createInterface() {
         // Send the email
         // startOver();
         $.post(
-            MAIL_URI, 
+            MAIL_URI,
             {
                 to: email,
                 subject: $("#agenda").text(),
                 body: $("#emailBody").text()
             }
-        ).done( function() { 
+        ).done( function() {
             alert("Ballot submitted!");
             $("#sendEmail").fadeOut();
         }).fail( function() {
